@@ -5,31 +5,26 @@ require_once '../includes/auth.php';
 $ticket_id = $_GET['id'] ?? 0;
 $cliente_id = $_SESSION['cliente_id'];
 
-// Consulta detalhada (segunda query que você forneceu)
 $sql = "SELECT 
             st.id_ticket AS id, 
-            st.protocolo AS protocolo, 
-            st.assunto AS assunto, 
-            st.mensagem AS mensagem, 
-            st.data_cadastro AS cadastro, 
-            st.responsavel AS responsavel,  
-            sts.situacao AS situacao, 
-            stp.prioridade AS prioridade,
-            c.fantasia AS fantasia, 
-            c.fone as fone, 
-            c.fone2 as fone2, 
-            c.celular as celular, 
-            c.contato as contato, 
-            c.email as email
+            st.protocolo, 
+            st.assunto, 
+            st.mensagem, 
+            st.data_cadastro, 
+            st.responsavel,  
+            sts.situacao, 
+            stp.prioridade,
+            c.fantasia, 
+            c.fone, 
+            c.celular, 
+            c.contato, 
+            c.email
         FROM 
-            clientes c, 
-            suporte_ticket st, 
-            suporte_ticket_prioridade stp, 
-            suporte_ticket_situacao sts
+            clientes c
+            JOIN suporte_ticket st ON st.cliente = c.id
+            JOIN suporte_ticket_prioridade stp ON st.prioridade = stp.id_prioridade
+            JOIN suporte_ticket_situacao sts ON st.id_situacao = sts.id_situacao
         WHERE 
-            st.cliente = c.id AND 
-            st.prioridade = stp.id_prioridade AND 
-            st.id_situacao = sts.id_situacao AND
             st.id_ticket = :ticket_id AND
             st.cliente = :cliente_id";
 
@@ -43,37 +38,77 @@ $ticket = $stmt->fetch();
 if (!$ticket) {
     die('Ticket não encontrado ou você não tem permissão para visualizá-lo.');
 }
-?>
 
+$statusClass = strtolower(str_replace(' ', '-', $ticket['situacao']));
+?>
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Ticket <?= htmlspecialchars($ticket['protocolo']) ?></title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket #<?= htmlspecialchars($ticket['protocolo']) ?></title>
+    <link rel="stylesheet" href="../assets/css/ver.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="ticket-container">
-        <h1>Ticket #<?= htmlspecialchars($ticket['protocolo']) ?></h1>
+    <div class="ticket-view-container">
+        <a href="index.php" class="back-button">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
         
-        <div class="ticket-header">
-            <p><strong>Cliente:</strong> <?= htmlspecialchars($ticket['fantasia']) ?></p>
-            <p><strong>Contato:</strong> <?= htmlspecialchars($ticket['contato']) ?> (<?= htmlspecialchars($ticket['email']) ?>)</p>
-            <p><strong>Telefones:</strong> <?= htmlspecialchars($ticket['fone']) ?> / <?= htmlspecialchars($ticket['celular']) ?></p>
+        <div class="ticket-detail <?= $statusClass ?>">
+            <div class="ticket-header">
+                <div>
+                    <h1 class="ticket-protocolo">Ticket #<?= htmlspecialchars($ticket['protocolo']) ?></h1>
+                    <h2 class="ticket-title"><?= htmlspecialchars($ticket['assunto']) ?></h2>
+                </div>
+                <div class="ticket-status <?= $statusClass ?>">
+                    <?= htmlspecialchars($ticket['situacao']) ?>
+                </div>
+            </div>
+            
+            <div class="ticket-meta-grid">
+                <div class="meta-item">
+                    <span class="meta-label">Cliente</span>
+                    <span class="meta-value"><?= htmlspecialchars($ticket['fantasia']) ?></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Contato</span>
+                    <span class="meta-value"><?= htmlspecialchars($ticket['contato']) ?></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Telefone</span>
+                    <span class="meta-value"><?= htmlspecialchars($ticket['fone']) ?></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Celular</span>
+                    <span class="meta-value"><?= htmlspecialchars($ticket['celular']) ?></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">E-mail</span>
+                    <span class="meta-value"><?= htmlspecialchars($ticket['email']) ?></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Data</span>
+                    <span class="meta-value"><?= date('d/m/Y H:i', strtotime($ticket['data_cadastro'])) ?></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Prioridade</span>
+                    <span class="meta-value"><?= htmlspecialchars($ticket['prioridade']) ?></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Responsável</span>
+                    <span class="meta-value"><?= htmlspecialchars($ticket['responsavel'] ?? 'Não atribuído') ?></span>
+                </div>
+            </div>
+            
+            <div class="ticket-content">
+                <h3>Mensagem</h3>
+                <div class="ticket-message">
+                    <?= nl2br(htmlspecialchars($ticket['mensagem'])) ?>
+                </div>
+            </div>
         </div>
-        
-        <div class="ticket-details">
-            <p><strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($ticket['cadastro'])) ?></p>
-            <p><strong>Status:</strong> <?= htmlspecialchars($ticket['situacao']) ?></p>
-            <p><strong>Prioridade:</strong> <?= htmlspecialchars($ticket['prioridade']) ?></p>
-            <p><strong>Responsável:</strong> <?= htmlspecialchars($ticket['responsavel'] ?? 'Não atribuído') ?></p>
-        </div>
-        
-        <div class="ticket-content">
-            <h2><?= htmlspecialchars($ticket['assunto']) ?></h2>
-            <div class="message"><?= nl2br(htmlspecialchars($ticket['mensagem'])) ?></div>
-        </div>
-        
-        <a href="index.php" class="back-button">← Voltar para a lista</a>
     </div>
 </body>
 </html>

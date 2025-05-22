@@ -1,72 +1,116 @@
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
+.post-it-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
     padding: 20px;
+}
+
+.post-it {
+    position: relative;
+    min-height: 220px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.post-it:hover {
+    transform: rotate(1deg) translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Cores por status */
+.post-it.aberto {
+    background: #FFF9C4;
+    border-left: 6px solid #FFD600;
+}
+
+.post-it.em-andamento {
+    background: #B3E5FC;
+    border-left: 6px solid #0288D1;
+}
+
+.post-it.resolvido {
+    background: #C8E6C9;
+    border-left: 6px solid #388E3C;
+}
+
+.post-it.fechado {
+    background: #EEEEEE;
+    border-left: 6px solid #757575;
+}
+
+.post-it-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.post-it-protocolo {
+    font-weight: bold;
     color: #333;
 }
 
-.tickets-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.post-it-date {
+    font-size: 0.85em;
+    color: #666;
 }
 
-.tickets-table th, .tickets-table td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-.tickets-table th {
-    background-color: #f5f5f5;
-}
-
-.tickets-table tr:hover {
-    background-color: #f9f9f9;
-}
-
-.ticket-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.ticket-header, .ticket-details {
-    background: #f5f5f5;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-
-.ticket-content {
-    margin-bottom: 30px;
-}
-
-.ticket-content h2 {
+.post-it-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin: 10px 0;
     color: #2c3e50;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
 }
 
-.message {
-    white-space: pre-line;
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 5px;
+.post-it-content {
+    flex-grow: 1;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    color: #555;
 }
 
-.back-button {
-    display: inline-block;
-    padding: 10px 15px;
-    background: #3498db;
-    color: white;
+.post-it-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed rgba(0,0,0,0.2);
+    padding-top: 10px;
+}
+
+.post-it-status {
+    font-size: 0.8em;
+    padding: 3px 8px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.1);
+}
+
+.post-it-link {
+    color: #3498db;
     text-decoration: none;
-    border-radius: 5px;
+    font-size: 0.9em;
 }
 
-.back-button:hover {
-    background: #2980b9;
+.post-it-link:hover {
+    text-decoration: underline;
+}
+
+.post-it::after {
+    content: "";
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, transparent 0%, transparent 50%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.05) 100%);
+}
+
+@media (max-width: 768px) {
+    .post-it-container {
+        grid-template-columns: 1fr;
+    }
 }

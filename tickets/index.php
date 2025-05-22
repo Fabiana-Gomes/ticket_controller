@@ -5,8 +5,12 @@ require_once '../includes/auth.php';
 $cliente_id = $_SESSION['cliente_id'];
 
 $sql = "SELECT 
-            st.*,
-            sts.situacao AS situacao
+            st.id_ticket as id,
+            st.protocolo,
+            st.assunto,
+            st.mensagem,
+            st.data_cadastro,
+            sts.situacao
         FROM 
             suporte_ticket st
             JOIN suporte_ticket_situacao sts ON st.id_situacao = sts.id_situacao
@@ -18,39 +22,54 @@ $sql = "SELECT
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':cliente_id' => $cliente_id]);
 $tickets = $stmt->fetchAll();
-?>
 
+// Verifica se há tickets antes de exibir
+if (empty($tickets)) {
+    $noTicketsMessage = "Nenhum ticket encontrado.";
+}
+?>
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Meus Tickets</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
-
 <body>
-    <h1>Meus Tickets</h1>
-    <table class="tickets-table">
-        <thead>
-            <tr>
-                <th>Protocolo</th>
-                <th>Assunto</th>
-                <th>Data</th>
-                <th>Situação</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($tickets as $ticket): ?>
-                <tr>
-                    <td><a href="ver.php?id=<?= $ticket['id_ticket'] ?>"><?= htmlspecialchars($ticket['protocolo']) ?></a></td>
-                    <td><?= htmlspecialchars($ticket['assunto']) ?></td>
-                    <td><?= date('d/m/Y H:i', strtotime($ticket['data_cadastro'])) ?></td>
-                    <td><?= htmlspecialchars($ticket['situacao'] ?? 'N/A') ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+    <div class="container">
+        <h1>Meus Tickets</h1>
 
+        <?php if (isset($noTicketsMessage)): ?>
+            <div class="no-tickets">
+                <?= $noTicketsMessage ?>
+            </div>
+        <?php else: ?>
+            <div class="post-it-container">
+                <?php foreach ($tickets as $ticket):
+                    $statusClass = strtolower(str_replace(' ', '-', $ticket['situacao']));
+                ?>
+                    <div class="post-it <?= $statusClass ?>">
+                        <div class="post-it-header">
+                            <div class="post-it-protocolo">#<?= htmlspecialchars($ticket['protocolo']) ?></div>
+                            <div class="post-it-date"><?= date('d/m/Y', strtotime($ticket['data_cadastro'])) ?></div>
+                        </div>
+                        <div class="post-it-title"><?= htmlspecialchars($ticket['assunto']) ?></div>
+                        <div class="post-it-content">
+                            <?= substr(htmlspecialchars($ticket['mensagem']), 0, 100) ?>...
+                        </div>
+                        <div class="post-it-footer">
+                            <span class="post-it-status"><?= htmlspecialchars($ticket['situacao']) ?></span>
+                            <a href="ver.php?id=<?= $ticket['id'] ?>" class="view-button">
+                                <span class="material-symbols-outlined">open_in_full</span>
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+    <script src="../assets/js/scripts.js"></script>
 </body>
 </html>
