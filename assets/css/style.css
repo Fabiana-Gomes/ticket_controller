@@ -1,3 +1,13 @@
+/* Container principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+      font-family: 'Poppins', sans-serif;
+
+}
+
+/* Grid de post-its */
 .post-it-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -5,6 +15,7 @@
     padding: 20px;
 }
 
+/* Estilo base do post-it */
 .post-it {
     position: relative;
     min-height: 220px;
@@ -16,8 +27,13 @@
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
+    background: #FFF9C4;
+    border-left: 6px solid #FFD600;
+    font-family: 'Poppins', sans-serif;
+
 }
 
+/* Efeito hover */
 .post-it:hover {
     transform: rotate(1deg) translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
@@ -44,6 +60,7 @@
     border-left: 6px solid #757575;
 }
 
+/* Elementos internos */
 .post-it-header {
     display: flex;
     justify-content: space-between;
@@ -53,11 +70,13 @@
 .post-it-protocolo {
     font-weight: bold;
     color: #333;
+    font-family: Arial, sans-serif;
 }
 
 .post-it-date {
     font-size: 0.85em;
     color: #666;
+    font-family: Arial, sans-serif;
 }
 
 .post-it-title {
@@ -72,6 +91,7 @@
     margin-bottom: 15px;
     line-height: 1.5;
     color: #555;
+    font-size: 1.1em;
 }
 
 .post-it-footer {
@@ -87,18 +107,10 @@
     padding: 3px 8px;
     border-radius: 10px;
     background: rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
 }
 
-.post-it-link {
-    color: #3498db;
-    text-decoration: none;
-    font-size: 0.9em;
-}
-
-.post-it-link:hover {
-    text-decoration: underline;
-}
-
+/* Detalhe decorativo */
 .post-it::after {
     content: "";
     position: absolute;
@@ -106,9 +118,41 @@
     right: 15px;
     width: 30px;
     height: 30px;
-    background: linear-gradient(135deg, transparent 0%, transparent 50%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.05) 100%);
 }
 
+/* Mensagem sem tickets */
+.no-tickets {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 1.2em;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.container h1 {
+  font-size: 32px;
+  font-weight: 700;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: black;
+  margin: 0;
+  letter-spacing: -1px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+.container h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  border-radius: 2px;
+}
+/* Responsividade */
 @media (max-width: 768px) {
     .post-it-container {
         grid-template-columns: 1fr;

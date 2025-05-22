@@ -22,35 +22,31 @@ $sql = "SELECT
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':cliente_id' => $cliente_id]);
 $tickets = $stmt->fetchAll();
-
-// Verifica se há tickets antes de exibir
-if (empty($tickets)) {
-    $noTicketsMessage = "Nenhum ticket encontrado.";
-}
 ?>
+
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Meus Tickets</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../assets/css/modal.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
 </head>
+
 <body>
     <div class="container">
-        <h1>Meus Tickets</h1>
+        <h1>Solicitações da unidade</h1>
 
-        <?php if (isset($noTicketsMessage)): ?>
-            <div class="no-tickets">
-                <?= $noTicketsMessage ?>
-            </div>
+        <?php if (empty($tickets)): ?>
+            <div class="no-tickets">Nenhum ticket encontrado.</div>
         <?php else: ?>
             <div class="post-it-container">
                 <?php foreach ($tickets as $ticket):
                     $statusClass = strtolower(str_replace(' ', '-', $ticket['situacao']));
                 ?>
-                    <div class="post-it <?= $statusClass ?>">
+                    <div class="post-it <?= $statusClass ?>" onclick="abrirModalTicket(<?= $ticket['id'] ?>)">
                         <div class="post-it-header">
                             <div class="post-it-protocolo">#<?= htmlspecialchars($ticket['protocolo']) ?></div>
                             <div class="post-it-date"><?= date('d/m/Y', strtotime($ticket['data_cadastro'])) ?></div>
@@ -61,15 +57,23 @@ if (empty($tickets)) {
                         </div>
                         <div class="post-it-footer">
                             <span class="post-it-status"><?= htmlspecialchars($ticket['situacao']) ?></span>
-                            <a href="ver.php?id=<?= $ticket['id'] ?>" class="view-button">
-                                <span class="material-symbols-outlined">open_in_full</span>
-                            </a>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
     </div>
+
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <div id="ticketDetalhes">
+                <div class="loading">Carregando ticket...</div>
+            </div>
+        </div>
+    </div>
+
     <script src="../assets/js/scripts.js"></script>
 </body>
+
 </html>
