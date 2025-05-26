@@ -31,12 +31,13 @@ $tickets = $stmt->fetchAll();
     <title>Meus Tickets</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/modal.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close" />
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modal.css">
 </head>
 
 <body>
@@ -47,69 +48,73 @@ $tickets = $stmt->fetchAll();
             <div class="title-underline"></div>
         </h1>
     </div>
-<div class="container-fluid mb-3">
-<div class="row justify-content-center">
-    <div class="col-lg-10">
-        <!-- Alinhar botão à direita -->
-        <div class="text-end">
-            <button class="btn filter-toggle-btn" id="filterToggleBtn">
-                <i class="bi bi-funnel me-2"></i>Filtrar Tickets
-                <i class="bi bi-chevron-down float-end" id="filterIcon"></i>
-            </button>
-        </div>
-            
-            <!-- Card do filtro (inicialmente oculto) -->
-            <div class="card filter-card" id="filterCard">
-                
-            <div class="card-body">
-                <form class="row g-2 align-items-end" id="filterForm">
-                        <!-- Status Filter -->
-                        <div class="col-md-3">
-                            <label for="statusFilter" class="form-label">Status</label>
-                            <select class="form-select" id="statusFilter">
-                                <option selected value="">Todos</option>
-                                <option value="aberto">Aberto</option>
-                                <option value="em-andamento">Em Andamento</option>
-                                <option value="resolvido">Resolvido</option>
-                                <option value="fechado">Fechado</option>
-                            </select>
-                        </div>
+    <div class="container-fluid mb-3">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Alinhar botão à direita -->
+                <div class="text-end">
+                    <button class="btn filter-toggle-btn" id="filterToggleBtn">
+                        <i class="bi bi-funnel me-2"></i>
+                        Filtrar Tickets
+                        <span class="ms-2">
+                            <i class="bi bi-chevron-down float-end" id="filterIcon"></i>
+                        </span>
 
-                        
-                        <!-- Start Date -->
-                        <div class="col-md-3">
-                            <label for="startDate" class="form-label">Data Inicial</label>
-                            <input type="date" class="form-control" id="startDate">
-                        </div>
-                        
-                        <!-- End Date -->
-                        <div class="col-md-3">
-                            <label for="endDate" class="form-label">Data Final</label>
-                            <input type="date" class="form-control" id="endDate">
-                        </div>
-                        
-                        <!-- Buttons -->
-                        <div class="col-md-3 text-end">
-                            <button type="button" class="btn btn-sm me-1 reset-btn" id="resetFilters">
-                                <i class="bi bi-arrow-counterclockwise"></i>
-                            </button>
-                            <button type="submit" class="btn btn-sm filter-btn">
-                                <i class="bi bi-filter"></i> Filtrar
-                            </button>
-                        </div>
-                    </form>
+                    </button>
+                </div>
+
+                <!-- Card do filtro (inicialmente oculto) -->
+                <div class="card filter-card" id="filterCard">
+
+                    <div class="card-body">
+                        <form class="row g-2 align-items-end" id="filterForm">
+                            <!-- Status Filter -->
+                            <div class="col-md-3">
+                                <label for="statusFilter" class="form-label">Status</label>
+                                <select class="form-select" id="statusFilter">
+                                    <option selected value="">Todos</option>
+                                    <option value="aberto">Aberto</option>
+                                    <option value="em-andamento">Em Andamento</option>
+                                    <option value="resolvido">Resolvido</option>
+                                    <option value="fechado">Fechado</option>
+                                </select>
+                            </div>
+
+
+                            <!-- Start Date -->
+                            <div class="col-md-3">
+                                <label for="startDate" class="form-label">Data Inicial</label>
+                                <input type="date" class="form-control" id="startDate">
+                            </div>
+
+                            <!-- End Date -->
+                            <div class="col-md-3">
+                                <label for="endDate" class="form-label">Data Final</label>
+                                <input type="date" class="form-control" id="endDate">
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-md-3 text-end">
+                                <button type="button" class="btn btn-sm me-1 reset-btn" id="resetFilters">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                </button>
+                                <button type="submit" class="btn btn-sm filter-btn">
+                                    <i class="bi bi-filter"></i> Filtrar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
     <?php if (empty($tickets)): ?>
-<div class="no-tickets-container">
-        <div class="no-tickets-card">
-            <i class="bi bi-inbox no-tickets-icon"></i>
-            <h3 class="no-tickets-title">Nenhum ticket encontrado</h3>
+        <div class="no-tickets-container">
+            <div class="no-tickets-card">
+                <i class="bi bi-inbox no-tickets-icon"></i>
+                <h3 class="no-tickets-title">Nenhum ticket encontrado</h3>
+            </div>
         </div>
-    </div>
     <?php else: ?>
         <div class="post-it-container">
             <?php foreach ($tickets as $ticket):
