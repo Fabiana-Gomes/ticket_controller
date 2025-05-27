@@ -1,4 +1,3 @@
 <?php
-header("Location: tickets/");
+header('Location: tickets/login.php');
 exit;
-?>

@@ -1,4 +1,7 @@
 <?php
 session_start();
-$_SESSION['cliente_id'] = 1;
-?>
+
+if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+    header('Location: /login.php');
+    exit;
+}

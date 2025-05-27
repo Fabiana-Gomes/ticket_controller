@@ -1,21 +1,23 @@
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener('DOMContentLoaded', function() {
     function abrirModalTicket(ticketId) {
         const modal = document.getElementById('ticketModal');
         const content = document.getElementById('ticketDetalhes');
         const postIt = document.querySelector(`.post-it[data-id="${ticketId}"]`);
-        if (!postIt) return;
-
-        const statusClass =
-            postIt.classList.contains('aberto') ? 'aberto' :
-            postIt.classList.contains('em-andamento') ? 'em-andamento' :
-            postIt.classList.contains('resolvido') ? 'resolvido' :
-            'fechado';
-
-        modal.querySelector('.modal-content').className = `modal-content ${statusClass}`;
+        
+        if (!postIt) {
+            console.error('Ticket não encontrado:', ticketId);
+            return;
+        }
+        const statusClass = postIt.classList.contains('aberto') ? 'aberto' :
+                          postIt.classList.contains('em-andamento') ? 'em-andamento' :
+                          postIt.classList.contains('resolvido') ? 'resolvido' : 'fechado';
+        
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.className = `modal-content ${statusClass}`;
+        }
         modal.style.display = 'flex';
         content.innerHTML = '<div class="loading">Carregando...</div>';
-
         fetch(`get_ticket.php?id=${ticketId}`)
             .then(response => {
                 if (!response.ok) throw new Error('Erro na rede');
@@ -25,14 +27,44 @@ document.addEventListener('DOMContentLoaded', function () {
                 content.innerHTML = data;
             })
             .catch(error => {
-                console.error('Erro:', error);
-                content.innerHTML = `<div class="error">Erro ao carregar ticket</div>`;
+                console.error('Erro ao carregar ticket:', error);
+                content.innerHTML = `<div class="error">Erro ao carregar detalhes do ticket</div>`;
             });
     }
-
     function fecharModal() {
-        document.getElementById('ticketModal').style.display = 'none';
+        const modal = document.getElementById('ticketModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
     }
+    document.addEventListener('click', function(e) {
+        const modal = document.getElementById('ticketModal');
+        if (modal && modal.style.display === 'flex') {
+            if (e.target.closest('.close-modal') || e.target === modal) {
+                fecharModal();
+            }
+        }
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('ticketModal');
+            if (modal && modal.style.display === 'flex') {
+                fecharModal();
+            }
+        }
+    });
+    document.querySelectorAll('.post-it').forEach(ticket => {
+        ticket.addEventListener('click', function(e) {
+            if (e.target.closest('.post-it-content') || e.target.closest('.post-it-footer')) {
+                return;
+            }
+            
+            const ticketId = this.getAttribute('data-id');
+            if (ticketId) {
+                abrirModalTicket(ticketId);
+            }
+        });
+    });
 
 
     const filterToggleBtn = document.getElementById('filterToggleBtn');

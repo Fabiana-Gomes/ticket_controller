@@ -190,10 +190,30 @@
 }
 
 
+@media (max-width: 992px) {
+    .modal-content {
+        width: 85%;
+        margin: 8% auto;
+    }
+    
+    .ticket-detail {
+        padding: 20px;
+    }
+    
+    .ticket-protocolo {
+        font-size: 1.3rem;
+    }
+    
+    .ticket-title {
+        font-size: 1.1rem;
+    }
+}
+
 @media (max-width: 768px) {
     .modal-content {
-        width: 95%;
-        margin: 10% auto;
+        width: 90%;
+        margin: 12% auto;
+        padding: 15px;
     }
     
     .ticket-meta-grid {
@@ -207,5 +227,66 @@
     .ticket-status {
         margin-top: 10px;
         align-self: flex-start;
+    }
+    
+    .ticket-detail::before {
+        width: 80px;
+        height: 80px;
+        bottom: -15px;
+        right: -15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .modal-content {
+        width: 95%;
+        margin: 15% auto;
+        padding: 12px;
+    }
+    
+    .ticket-detail {
+        padding: 15px;
+    }
+    
+    .ticket-protocolo {
+        font-size: 1.2rem;
+    }
+    
+    .close-modal {
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+    }
+    
+    .ticket-message {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .meta-value {
+        font-size: 0.85rem;
+    }
+    
+    .ticket-content h3 {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .modal-content {
+        margin: 20% auto;
+    }
+    
+    .ticket-detail::before {
+        display: none;
+    }
+    
+    .ticket-header {
+        margin-bottom: 15px;
+    }
+    
+    .loading {
+        padding: 20px;
+        font-size: 0.9rem;
     }
 }
