@@ -130,14 +130,30 @@ document.addEventListener('DOMContentLoaded', function() {
         filterIcon.classList.replace('bi-chevron-up', 'bi-chevron-down');
     }
 
-    function resetFilters() {
-        document.getElementById('statusFilter').value = '';
-        document.getElementById('startDate').value = '';
-        document.getElementById('endDate').value = '';
-
+    function resetFilters(e) {
+        e.preventDefault();
+        
+        // Limpa os valores dos filtros
+        if (statusFilter) statusFilter.value = '';
+        if (startDate) startDate.value = '';
+        if (endDate) endDate.value = '';
+        
+        // Mostra todos os tickets novamente
         document.querySelectorAll('.post-it').forEach(ticket => {
             ticket.style.display = 'block';
         });
+        
+        // Fecha o card de filtros (opcional)
+        if (filterCard) filterCard.style.display = 'none';
+        if (filterIcon) {
+            filterIcon.classList.remove('bi-chevron-up');
+            filterIcon.classList.add('bi-chevron-down');
+        }
+        
+        // Limpa qualquer filtro aplicado na URL (se necessário)
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.pathname);
+        }
     }
 
     document.addEventListener('click', function (e) {
