@@ -10,7 +10,7 @@ body {
 }
 
 .title-container {
-     background: linear-gradient(135deg, #f7fbff 0%, #fafafc 100%);
+    background: #ffffff;
     border: 1px solid rgba(4, 20, 140, 0.15);
     transition: all 0.3s ease;
     padding: 1.5rem;
@@ -93,7 +93,6 @@ body {
     justify-content: space-between;
     cursor: pointer;
     background: white;
-    border-top: 4px solid #a37e3b;
     overflow: hidden;
 }
 
@@ -101,11 +100,6 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
 }
-
-.post-it.aberto { border-top-color: #a37e3b; }
-.post-it.em-andamento { border-top-color: #04148c; }
-.post-it.resolvido { border-top-color: #4c8c4a; }
-.post-it.fechado { border-top-color: #6d6d6d; }
 
 .post-it-header {
     display: flex;
@@ -154,7 +148,75 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-top: 12px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+:root {
+    --status-resolvido: #4c8c4a;
+    --status-profissional: #04148c;
+    --status-treinamento: #a37e3b;
+    --status-cancelado: #6d6d6d;
+    --status-ecommerce: #800080;
+}
+
+.post-it-status {
+   font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.post-it[class*="post-it-"] .post-it-status {
+    color: rgb(var(--status-rgb));
+}
+
+.post-it.resolvido,
+.post-it.respondido,
+.post-it.corrigido {
+    --status-rgb: 76, 140, 74;
+}
+
+.post-it.instalacao,
+.post-it.livros-lucrativos,
+.post-it.instrutor-comunicativo,
+.post-it.om-digital,
+.post-it.classstudio,
+.post-it.crm,
+.post-it.carteira-estudante {
+    --status-rgb: 4, 20, 140;
+}
+
+.post-it.treinamento,
+.post-it.acompanhamento,
+.post-it.correcao-cursos,
+.post-it.melhoria-metodo,
+.post-it.treinamento-ferramentas,
+.post-it.gestor-melhorias,
+.post-it.sugestao {
+    --status-rgb: 163, 126, 59;
+}
+
+.post-it.cancelado,
+.post-it.desinstalacao {
+    --status-rgb: 109, 109, 109;
+}
+
+.post-it.loja-virtual,
+.post-it.ajustes-loja,
+.post-it.instalacao-ead,
+.post-it.site,
+.post-it.ajustes-site,
+.post-it.lp,
+.post-it.bel,
+.post-it.edpay,
+.post-it.gestor,
+.post-it.sender,
+.post-it.app-cursos,
+.post-it.pagarme,
+.post-it.migracao,
+.post-it.ead {
+    --status-rgb: 128, 0, 128;
 }
 
 .post-it-status {
@@ -164,28 +226,14 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: inline-block;
+    background-color: rgba(var(--status-rgb), 0.1); 
+    border: 1px solid rgba(var(--status-rgb), 0.3); 
 }
 
-.post-it.aberto .post-it-status {
-    background-color: rgba(163, 126, 59, 0.1);
-    color: #a37e3b;
+.post-it[class*="post-it-"] .post-it-status {
+    color: rgb(var(--status-rgb));
 }
-
-.post-it.em-andamento .post-it-status {
-    background-color: rgba(4, 20, 140, 0.1);
-    color: #04148c;
-}
-
-.post-it.resolvido .post-it-status {
-    background-color: rgba(76, 140, 74, 0.1);
-    color: #4c8c4a;
-}
-
-.post-it.fechado .post-it-status {
-    background-color: rgba(109, 109, 109, 0.1);
-    color: #6d6d6d;
-}
-
 .post-it-more {
     color: rgba(0, 0, 0, 0.2);
     transition: all 0.2s ease;
@@ -235,9 +283,9 @@ body {
 }
 
 .filter-wrapper {
-    max-width: 1200px; 
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px; 
+    padding: 0 20px;
 }
 
 .filter-container {
@@ -247,7 +295,7 @@ body {
 }
 
 .filter-toggle-btn {
-    background: linear-gradient(135deg, #f7fbff 0%, #fafbfc 100%);
+    background: #ffffff;
     border: 1px solid #dee2e6;
     color: #04148c;
     padding: 0.5rem 1.25rem;
@@ -260,35 +308,37 @@ body {
 
 .filter-toggle-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(4, 20, 140, 0.15);
+    box-shadow: 0 8px 20px rgba(8, 21, 124, 0.10);
+    color: #04148c;
+    background-color: #ffffff;
 }
 
 .filter-card {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    width: 60%;
-    max-width: 1100px;
-    min-width: 1100px;
+    width: 80%;
+    max-width: 1150px;
+    min-width: 1150px;
     margin: 0.5rem auto;
-    background: linear-gradient(135deg, #f7fbff 0%, #fafbfc 100%);
     border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0rem 1rem rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
+    background-color: #f8f8f8;
+    border-top: 4px solid #a37e3b;
 }
 
 .filter-card .form-label {
     color: #04148c;
     font-size: 0.85rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #f7fbff 0%, #fafbfc 100%);
 }
 
 .filter-card .form-select,
 .filter-card .form-control {
     border-color: #a37e3b;
     font-size: 0.85rem;
-    background: linear-gradient(135deg, #f7fbff 0%, #fafbfc 100%);
+    background-color: #f8f8f8;
     flex-grow: 1;
     min-width: 0;
 }
@@ -324,45 +374,46 @@ body {
     font-weight: 600;
 }
 
+
 @media (max-width: 767px) {
     .title-container {
         padding: 1rem;
         margin: 1rem auto;
     }
-    
+
     .title-container h1 {
         font-size: 1.5rem;
     }
-    
+
     .title-icon {
         font-size: 1.25rem;
         margin-right: 0.5rem;
     }
-    
+
     .title-underline {
         width: 7rem;
     }
-    
+
     .post-it-container {
         grid-template-columns: 1fr;
         gap: 20px;
         padding: 15px;
     }
-    
+
     .post-it {
         min-height: auto;
         padding: 20px;
     }
-    
+
     .filter-wrapper {
         padding: 0 15px;
     }
-    
+
     .filter-toggle-btn {
         padding: 0.4rem 1rem;
         font-size: 0.9rem;
     }
-    
+
     .filter-card {
         width: 100%;
         min-width: 100%;
@@ -371,52 +422,22 @@ body {
         left: 0;
         transform: none;
     }
-    
+
     .filter-card .form-label,
     .filter-card .form-select,
     .filter-card .form-control {
         font-size: 0.8rem;
     }
-    
+
     .no-tickets-card {
         padding: 1.5rem;
     }
-    
+
     .no-tickets-icon {
         font-size: 2.5rem;
     }
-    
+
     .no-tickets-title {
         font-size: 1.2rem;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-    .post-it-container {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-    
-    .filter-card {
-        width: 80%;
-        min-width: 80%;
-    }
-}
-
-@media (max-width: 399px) {
-    .title-container h1 {
-        font-size: 1.3rem;
-    }
-    
-    .filter-toggle-btn {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.8rem;
-    }
-    
-    .post-it-title {
-        font-size: 1rem;
-    }
-    
-    .post-it-content {
-        font-size: 0.85rem;
     }
 }

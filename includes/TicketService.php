@@ -3,23 +3,20 @@ class TicketService
 {
     private $pdo;
 
-    // Construtor da classe recebe uma instância do PDO (conexão com banco)
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
-    // Recupera os detalhes de um ticket específico pertencente a um cliente específico
     public function getTicketDetails(int $ticketId, int $clienteId)
     {
-        // Consulta SQL para buscar os dados do ticket + situação (somente os campos necessários)
         $sql = "SELECT 
                     st.protocolo,
                     st.cliente,
                     st.assunto,
                     st.mensagem,
                     DATE_FORMAT(st.data_cadastro, '%d/%m/%Y %H:%i') AS data_cadastro,
-                    DATE_FORMAT(st.data_atualizacao, '%d/%m/%Y %H:%i') AS data_atualizacao,
+                    st.interno,
                     sts.situacao
                 FROM 
                     suporte_ticket st
@@ -40,91 +37,93 @@ class TicketService
             return null;
         }
 
-        // Busca respostas do ticket (resposta e data formatada)
-        $sqlRespostas = "SELECT 
-                            resposta,
-                            DATE_FORMAT(data_resposta, '%d/%m/%Y %H:%i') as data_resposta
-                        FROM 
-                            suporte_ticket_resposta
-                        WHERE 
-                            id_ticket = :ticket_id
-                        ORDER BY 
-                            data_resposta ASC";
+        if ((int)$ticketData['interno'] === 0) {
+            $sqlRespostas = "SELECT 
+                                resposta,
+                                DATE_FORMAT(data_resposta, '%d/%m/%Y %H:%i') as data_resposta
+                            FROM 
+                                suporte_ticket_resposta
+                            WHERE 
+                                id_ticket = :ticket_id
+                            ORDER BY 
+                                data_resposta ASC";
 
-        $stmtRespostas = $this->pdo->prepare($sqlRespostas);
-        if ($stmtRespostas->execute([':ticket_id' => $ticketId])) {
-            $ticketData['respostas'] = $stmtRespostas->fetchAll(PDO::FETCH_ASSOC);
+            $stmtRespostas = $this->pdo->prepare($sqlRespostas);
+            if ($stmtRespostas->execute([':ticket_id' => $ticketId])) {
+                $ticketData['respostas'] = $stmtRespostas->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                error_log("Erro ao buscar respostas: " . print_r($stmtRespostas->errorInfo(), true));
+                $ticketData['respostas'] = [];
+            }
         } else {
-            error_log("Erro ao buscar respostas: " . print_r($stmtRespostas->errorInfo(), true));
             $ticketData['respostas'] = [];
         }
 
         return $ticketData;
     }
 
-    // Gera HTML para exibir o conteúdo do ticket
     public function renderTicket(array $ticketData): string
     {
         if (empty($ticketData)) {
-            return '<div class="error">Ticket não encontrado</div>';
+            return '<div class="error-message">Ticket não encontrado</div>';
         }
 
-        // Classe CSS com base na situação do ticket (ex: aberto -> .aberto)
         $statusClass = strtolower(str_replace(' ', '-', $ticketData['situacao']));
-
-        // Começa a capturar o conteúdo HTML
+        $borderColorClass = $statusClass;
         ob_start(); ?>
-        <div class="ticket-detail <?= htmlspecialchars($statusClass) ?>">
+
+        <div class="ticket-detail-container">
             <div class="ticket-header">
-                <div>
+                <div class="ticket-title-group">
                     <h1 class="ticket-protocolo">Ticket #<?= htmlspecialchars($ticketData['protocolo']) ?></h1>
-                    <h2 class="ticket-title"><?= htmlspecialchars($ticketData['assunto']) ?></h2>
+                    <h2 class="ticket-assunto"><?= htmlspecialchars($ticketData['assunto']) ?></h2>
                 </div>
-                <div class="ticket-status <?= htmlspecialchars($statusClass) ?>">
+                <span class="ticket-status <?= htmlspecialchars($statusClass) ?>">
                     <?= htmlspecialchars($ticketData['situacao']) ?>
+                </span>
+            </div>
+
+            <div class="ticket-meta-grid">
+                <div class="meta-item">
+                    <span class="meta-label">Cliente ID</span>
+                    <span class="meta-value"><?= htmlspecialchars($ticketData['cliente']) ?></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Data Cadastro</span>
+                    <span class="meta-value"><?= htmlspecialchars($ticketData['data_cadastro']) ?></span>
                 </div>
             </div>
-
-            <!-- Metadados do ticket -->
-            <div class="ticket-meta-grid">
-                <div><strong>Cliente ID:</strong> <?= htmlspecialchars($ticketData['cliente']) ?></div>
-                <div><strong>Data Cadastro:</strong> <?= htmlspecialchars($ticketData['data_cadastro']) ?></div>
-                <div><strong>Última Atualização:</strong> <?= htmlspecialchars($ticketData['data_atualizacao']) ?></div>
-            </div>
-
-            <div class="ticket-content">
-                <h3>Mensagem</h3>
-                <div class="ticket-message">
+            <div class="ticket-message-container">
+                <h3 class="section-title">Solicitação</h3>
+                <div class="ticket-message-content">
                     <?= nl2br(htmlspecialchars($ticketData['mensagem'])) ?>
                 </div>
             </div>
-
-            <!-- Respostas -->
             <?php if (!empty($ticketData['respostas'])): ?>
-                <div class="ticket-responses">
-                    <h3>Respostas</h3>
-                    <?php foreach ($ticketData['respostas'] as $resposta): ?>
-                        <div class="response-item">
-                            <div class="response-header">
-                                <span class="response-author">Atendente</span>
-                                <span class="response-date">
-                                    <?= htmlspecialchars($resposta['data_resposta']) ?>
-                                </span>
+                <div class="ticket-responses-section">
+                    <h3 class="section-title">Resolução</h3>
+                    <div class="responses-list">
+                        <?php foreach ($ticketData['respostas'] as $resposta): ?>
+                            <div class="response-item <?= htmlspecialchars($borderColorClass) ?>">
+                                <div class="response-header">
+                                    <span class="response-date"><?= htmlspecialchars($resposta['data_resposta']) ?></span>
+                                </div>
+                                <div class="response-content">
+                                    <?= nl2br(htmlspecialchars($resposta['resposta'])) ?>
+                                </div>
                             </div>
-                            <div class="response-content">
-                                <?= nl2br(htmlspecialchars($resposta['resposta'])) ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-            <?php else: ?>
-                <div class="alert alert-info">
-                    <i class="bi bi-info-circle-fill"></i> Este ticket ainda não possui respostas.
+            <?php elseif ((int)$ticketData['interno'] === 0): ?>
+                <div class="ticket-notification">
+                    <i class="notification-icon"></i>
+                    <span>Este ticket ainda não possui respostas.</span>
                 </div>
             <?php endif; ?>
         </div>
-        <?php
-        // Retorna o conteúdo HTML gerado
+        </div>
+<?php
         return ob_get_clean();
     }
 }

@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost';
-$dbname = 'suporte_tickets_dev';
-$user = 'root';
-$password = '';
+$host = 'database-adm.cgkhq7iflebh.us-east-1.rds.amazonaws.com';
+$dbname = 'gestaoou_adm';
+$user = 'tickets';
+$password = 'l05QVSI2p8{+';
 
 try {
     $pdo = new PDO(

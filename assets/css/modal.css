@@ -24,9 +24,60 @@
     max-width: 800px;
     max-height: 90vh;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    border-top: 4px solid #a37e3b;
+    border-top: 7px solid;
+
+    border-radius: 15px;
     overflow-y: auto;
 }
+
+.modal-content.resolvido,
+.modal-content.respondido,
+.modal-content.corrigido {
+    border-top-color: #4c8c4a;
+}
+
+.modal-content.instalacao,
+.modal-content.livros-lucrativos,
+.modal-content.instrutor-comunicativo,
+.modal-content.om-digital,
+.modal-content.classstudio,
+.modal-content.crm,
+.modal-content.carteira-estudante {
+    border-top-color: #04148c;
+}
+
+.modal-content.treinamento,
+.modal-content.acompanhamento,
+.modal-content.correcao-cursos,
+.modal-content.melhoria-metodo,
+.modal-content.treinamento-ferramentas,
+.modal-content.gestor-melhorias,
+.modal-content.sugestao {
+    border-top-color: #a37e3b;
+}
+
+.modal-content.cancelado,
+.modal-content.desinstalacao {
+    border-top-color: #6d6d6d;
+}
+
+.modal-content.loja-virtual,
+.modal-content.ajustes-loja,
+.modal-content.instalacao-ead,
+.modal-content.site,
+.modal-content.ajustes-site,
+.modal-content.lp,
+.modal-content.bel,
+.modal-content.edpay,
+.modal-content.gestor,
+.modal-content.sender,
+.modal-content.app-cursos,
+.modal-content.pagarme,
+.modal-content.migracao,
+.modal-content.ead {
+    border-top-color: #800080;
+}
+
 
 .close-modal {
     position: absolute;
@@ -67,42 +118,38 @@
     margin: 20px;
 }
 
-.ticket-detail {
+.ticket-detail-container {
+    background: white;
+    border-radius: 8px;
     padding: 25px;
-    position: relative;
-}
-
-.ticket-detail::before {
-    content: "";
-    position: absolute;
-    bottom: -20px;
-    right: -20px;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, rgba(163,126,59,0.05) 0%, rgba(255,255,255,0) 70%);
-    border-radius: 50%;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .ticket-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     padding-bottom: 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ticket-title-group {
+    flex: 1;
 }
 
 .ticket-protocolo {
     font-weight: 600;
-    color: #04148c;
+    color: #000000;
     font-size: 1.5rem;
-    margin-bottom: 5px;
+    margin: 0 0 5px 0;
 }
 
-.ticket-title {
+.ticket-assunto {
     font-weight: 600;
-    color: #333;
+    color: #444;
     font-size: 1.2rem;
+    margin: 0;
 }
 
 .ticket-status {
@@ -114,6 +161,52 @@
     letter-spacing: 0.5px;
 }
 
+.ticket-status.instalacao,
+.ticket-status.livros-lucrativos,
+.ticket-status.instrutor-comunicativo,
+.ticket-status.om-digital,
+.ticket-status.classstudio,
+.ticket-status.crm,
+.ticket-status.carteira-estudante {
+    background-color: rgba(4, 20, 140, 0.1);
+    color: #04148c;
+}
+
+.ticket-status.treinamento,
+.ticket-status.acompanhamento,
+.ticket-status.correcao-cursos,
+.ticket-status.melhoria-metodo,
+.ticket-status.treinamento-ferramentas,
+.ticket-status.gestor-melhorias,
+.ticket-status.sugestao {
+    background-color: rgba(163, 126, 59, 0.1);
+    color: #a37e3b;
+}
+
+.ticket-status.cancelado,
+.ticket-status.desinstalacao {
+    background-color: rgba(109, 109, 109, 0.1);
+    color: #6d6d6d;
+}
+
+.ticket-status.loja-virtual,
+.ticket-status.ajustes-loja,
+.ticket-status.instalacao-ead,
+.ticket-status.site,
+.ticket-status.ajustes-site,
+.ticket-status.lp,
+.ticket-status.bel,
+.ticket-status.edpay,
+.ticket-status.gestor,
+.ticket-status.sender,
+.ticket-status.app-cursos,
+.ticket-status.pagarme,
+.ticket-status.migracao,
+.ticket-status.ead {
+    background-color: rgba(179, 30, 30, 0.1);
+    color: #800080;
+}
+
 .ticket-meta-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -122,174 +215,144 @@
 }
 
 .meta-item {
-    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.02);
+    padding: 12px;
+    border-radius: 6px;
+    background: white;
+    border-radius: 6px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.10);
 }
 
 .meta-label {
     display: block;
     font-size: 0.75rem;
-    color: #777;
+    color: #000000;
     margin-bottom: 3px;
+    font-weight: 600;
 }
 
 .meta-value {
     font-weight: 500;
-    color: #333;
+    color: #444;
     font-size: 0.9rem;
 }
 
-.ticket-content h3 {
-    font-size: 1.1rem;
-    color: #04148c;
-    margin-bottom: 10px;
+.section-title {
+    font-size: 1.5rem;
+    color: #000000;
+    font-weight: 600;
+    margin-top: 7%;
 }
 
-.ticket-message {
+.ticket-message-container {
+    margin-bottom: 30px;
+}
+
+.ticket-message-content {
     background: rgba(0, 0, 0, 0.02);
+    padding: 12px;
+    border-radius: 6px;
+    background: white;
+    border-radius: 6px;
     padding: 15px;
-    border-radius: 5px;
-    line-height: 1.6;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.10);
     color: #444;
 }
 
-.ticket-detail.aberto,
-.modal-content.aberto {
-    border-top-color: #a37e3b;
+.ticket-responses-container {
+    margin-top: 30px;
 }
 
-.ticket-detail.em-andamento,
-.modal-content.em-andamento {
-    border-top-color: #04148c;
+.response-item {
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 6px;
+    padding: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.10);
+    border-left: 4px solid;
 }
 
-.ticket-detail.resolvido,
-.modal-content.resolvido {
-    border-top-color: #4c8c4a;
+.response-item.resolvido,
+.response-item.respondido,
+.response-item.corrigido {
+    border-left-color: #4c8c4a;
 }
 
-.ticket-detail.fechado,
-.modal-content.fechado {
-    border-top-color: #6d6d6d;
+.response-item.instalacao,
+.response-item.livros-lucrativos,
+.response-item.instrutor-comunicativo,
+.response-item.om-digital,
+.response-item.classstudio,
+.response-item.crm,
+.response-item.carteira-estudante {
+    border-left-color: #04148c;
 }
 
-.ticket-status.aberto {
-    background-color: rgba(163, 126, 59, 0.1);
-    color: #a37e3b;
+.response-item.treinamento,
+.response-item.acompanhamento,
+.response-item.correcao-cursos,
+.response-item.melhoria-metodo,
+.response-item.treinamento-ferramentas,
+.response-item.gestor-melhorias,
+.response-item.sugestao {
+    border-left-color: #a37e3b;
 }
 
-.ticket-status.em-andamento {
-    background-color: rgba(4, 20, 140, 0.1);
+.response-item.cancelado,
+.response-item.desinstalacao {
+    border-left-color: #6d6d6d;
+}
+
+.response-item.loja-virtual,
+.response-item.ajustes-loja,
+.response-item.instalacao-ead,
+.response-item.site,
+.response-item.ajustes-site,
+.response-item.lp,
+.response-item.bel,
+.response-item.edpay,
+.response-item.gestor,
+.response-item.sender,
+.response-item.app-cursos,
+.response-item.pagarme,
+.response-item.migracao,
+.response-item.ead {
+    border-left-color: #800080;
+}
+
+
+.ticket-notification {
+    background: rgba(4, 20, 140, 0.05);
+    padding: 15px;
+    border-radius: 6px;
     color: #04148c;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
 }
 
-.ticket-status.resolvido {
-    background-color: rgba(76, 140, 74, 0.1);
-    color: #4c8c4a;
+.response-header {
+    margin-bottom: 4px;
 }
 
-.ticket-status.fechado {
-    background-color: rgba(109, 109, 109, 0.1);
-    color: #6d6d6d;
+.response-date {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #000;
+
 }
 
-
-@media (max-width: 992px) {
-    .modal-content {
-        width: 85%;
-        margin: 8% auto;
-    }
-    
-    .ticket-detail {
-        padding: 20px;
-    }
-    
-    .ticket-protocolo {
-        font-size: 1.3rem;
-    }
-    
-    .ticket-title {
-        font-size: 1.1rem;
-    }
+.response-content {
+    color: #444;
+    line-height: 1.5;
 }
 
-@media (max-width: 768px) {
-    .modal-content {
-        width: 90%;
-        margin: 12% auto;
-        padding: 15px;
-    }
-    
-    .ticket-meta-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .ticket-header {
-        flex-direction: column;
-    }
-    
-    .ticket-status {
-        margin-top: 10px;
-        align-self: flex-start;
-    }
-    
-    .ticket-detail::before {
-        width: 80px;
-        height: 80px;
-        bottom: -15px;
-        right: -15px;
-    }
-}
-
-@media (max-width: 576px) {
-    .modal-content {
-        width: 95%;
-        margin: 15% auto;
-        padding: 12px;
-    }
-    
-    .ticket-detail {
-        padding: 15px;
-    }
-    
-    .ticket-protocolo {
-        font-size: 1.2rem;
-    }
-    
-    .close-modal {
-        width: 30px;
-        height: 30px;
-        font-size: 20px;
-    }
-    
-    .ticket-message {
-        padding: 12px;
-        font-size: 0.9rem;
-    }
-    
-    .meta-value {
-        font-size: 0.85rem;
-    }
-    
-    .ticket-content h3 {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 400px) {
-    .modal-content {
-        margin: 20% auto;
-    }
-    
-    .ticket-detail::before {
-        display: none;
-    }
-    
-    .ticket-header {
-        margin-bottom: 15px;
-    }
-    
-    .loading {
-        padding: 20px;
-        font-size: 0.9rem;
-    }
+.error-message {
+    background: #ffebee;
+    color: #d32f2f;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
 }

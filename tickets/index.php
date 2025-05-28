@@ -33,8 +33,10 @@ $tickets = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/modal.css">
@@ -48,7 +50,7 @@ $tickets = $stmt->fetchAll();
             <div class="title-underline"></div>
         </h1>
     </div>
-    <div class="filter-wrapper">
+      <div class="filter-wrapper">
         <div class="filter-container">
             <button class="btn filter-toggle-btn" id="filterToggleBtn">
                 <i class="bi bi-funnel me-2"></i>
@@ -64,10 +66,11 @@ $tickets = $stmt->fetchAll();
                     <label for="statusFilter" class="form-label">Status</label>
                     <select class="form-select" id="statusFilter">
                         <option selected value="">Todos</option>
-                        <option value="aberto">Aberto</option>
-                        <option value="em-andamento">Em Andamento</option>
-                        <option value="resolvido">Resolvido</option>
-                        <option value="fechado">Fechado</option>
+                        <option value="resolvido">Resolvido/Respondido/Corrigido</option>
+                        <option value="instalacao">Instalação/Livros/Instrutor</option>
+                        <option value="treinamento">Treinamento/Acompanhamento</option>
+                        <option value="cancelado">Cancelado/Desinstalação</option>
+                        <option value="loja-virtual">Loja Virtual/E-commerce</option>
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -89,9 +92,7 @@ $tickets = $stmt->fetchAll();
             </form>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
+    
     <?php if (empty($tickets)): ?>
         <div class="no-tickets-container">
             <div class="no-tickets-card">
@@ -102,7 +103,43 @@ $tickets = $stmt->fetchAll();
     <?php else: ?>
         <div class="post-it-container">
             <?php foreach ($tickets as $ticket):
-                $statusClass = strtolower(str_replace(' ', '-', $ticket['situacao']));
+                $statusMapping = [
+                    'Resolvido' => 'resolvido',
+                    'Respondido' => 'resolvido',
+                    'Corrigido' => 'resolvido',
+                    'Instalação' => 'instalacao',
+                    'Livros Lucrativos' => 'livros-lucrativos',
+                    'Instrutor Comunicativo' => 'instrutor-comunicativo',
+                    'Contratação OM DIGITAL' => 'om-digital',
+                    'ClassStudio' => 'classstudio',
+                    'CRM' => 'crm',
+                    'Carteira de Estudante AERGS' => 'carteira-estudante',
+                    'Treinamento' => 'treinamento',
+                    'Em acompanhamento' => 'acompanhamento',
+                    'Correção de cursos' => 'correcao-cursos',
+                    'Melhoria e ajuste método' => 'melhoria-metodo',
+                    'Treinamento ferramentas' => 'treinamento-ferramentas',
+                    'Gestor Melhorias' => 'gestor-melhorias',
+                    'Sugestão' => 'sugestao',
+                    'Cancelado' => 'cancelado',
+                    'Desinstalação' => 'desinstalacao',
+                    'Loja Virtual' => 'loja-virtual',
+                    'Ajustes Loja' => 'ajustes-loja',
+                    'Instalação EAD' => 'instalacao-ead',
+                    'Site' => 'site',
+                    'Ajustes Site' => 'ajustes-site',
+                    'LP' => 'lp',
+                    'B.E.L.' => 'bel',
+                    'Edpay' => 'edpay',
+                    'Gestor' => 'gestor',
+                    'Sender' => 'sender',
+                    'Meu App de Cursos' => 'app-cursos',
+                    'Pagar.me' => 'pagarme',
+                    'Liberação de Migração' => 'migracao',
+                    'EAD' => 'ead'
+                ];
+                
+                $statusClass = $statusMapping[$ticket['situacao']] ?? 'aberto';
             ?>
                 <div class="post-it <?= $statusClass ?>" data-id="<?= $ticket['id'] ?>">
                     <div class="post-it-header">
@@ -120,7 +157,6 @@ $tickets = $stmt->fetchAll();
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
-    </div>
 
     <div id="ticketModal" class="modal">
         <div class="modal-content">

@@ -98,32 +98,66 @@ body {
     border: none;
     border-radius: 8px;
 }
-@media (max-width: 479.98px) {
-    body {
-        padding: 0.5rem;
+
+@media (max-width: 767px) {
+    .modal {
+        padding: 10px;
     }
-    .login-container {
-        max-width: 100%;
-        margin: 0 0.5rem;
+    
+    .modal-content {
+        width: 95%;
+        max-height: 85vh;
+        padding: 15px;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
-    .card-header {
-        padding: 1rem 1rem 0;
+    
+    .close-modal {
+        right: 10px;
+        top: 5px;
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
     }
-    .card-body {
-        padding: 1rem;
+    
+    .ticket-header {
+        flex-direction: column;
+        gap: 10px;
     }
-    .logo-icon {
-        font-size: 1.75rem;
-        margin-bottom: 0.5rem;
+    
+    .ticket-protocolo {
+        font-size: 1.2rem;
     }
-    .card-title {
-        font-size: 1.25rem;
+    
+    .ticket-assunto {
+        font-size: 1rem;
     }
-    .form-label {
-        font-size: 0.9rem;
+    
+    .ticket-status {
+        align-self: flex-start;
     }
-    .btn-login {
-        font-size: 0.85rem;
-        padding: 0.5rem;
+    
+    .ticket-meta-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+        margin-top: 5%;
+    }
+    
+    .response-item {
+        padding: 15px;
+        border-left-width: 3px;
+    }
+    
+    .response-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .response-date {
+        font-size: 0.8rem;
     }
 }

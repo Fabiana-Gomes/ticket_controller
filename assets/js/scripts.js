@@ -1,17 +1,21 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+
+    //abrir modal
+
+    
     function abrirModalTicket(ticketId) {
         const modal = document.getElementById('ticketModal');
         const content = document.getElementById('ticketDetalhes');
         const postIt = document.querySelector(`.post-it[data-id="${ticketId}"]`);
-        
+
         if (!postIt) {
             console.error('Ticket não encontrado:', ticketId);
             return;
         }
         const statusClass = postIt.classList.contains('aberto') ? 'aberto' :
-                          postIt.classList.contains('em-andamento') ? 'em-andamento' :
-                          postIt.classList.contains('resolvido') ? 'resolvido' : 'fechado';
-        
+            postIt.classList.contains('em-andamento') ? 'em-andamento' :
+                postIt.classList.contains('resolvido') ? 'resolvido' : 'fechado';
+
         const modalContent = modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.className = `modal-content ${statusClass}`;
@@ -31,13 +35,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 content.innerHTML = `<div class="error">Erro ao carregar detalhes do ticket</div>`;
             });
     }
+       document.querySelectorAll('.post-it').forEach(ticket => {
+        const ticketId = ticket.dataset.id;
+        if (ticketId) {
+            ticket.addEventListener('click', () => abrirModalTicket(ticketId));
+        }
+    });
+
+    //fechar modal
+
     function fecharModal() {
         const modal = document.getElementById('ticketModal');
         if (modal) {
             modal.style.display = 'none';
         }
     }
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         const modal = document.getElementById('ticketModal');
         if (modal && modal.style.display === 'flex') {
             if (e.target.closest('.close-modal') || e.target === modal) {
@@ -45,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             const modal = document.getElementById('ticketModal');
             if (modal && modal.style.display === 'flex') {
@@ -53,19 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    document.querySelectorAll('.post-it').forEach(ticket => {
-        ticket.addEventListener('click', function(e) {
-            if (e.target.closest('.post-it-content') || e.target.closest('.post-it-footer')) {
-                return;
-            }
-            
-            const ticketId = this.getAttribute('data-id');
-            if (ticketId) {
-                abrirModalTicket(ticketId);
-            }
-        });
-    });
 
+
+    // filtro
 
     const filterToggleBtn = document.getElementById('filterToggleBtn');
     const filterCard = document.getElementById('filterCard');
@@ -96,9 +99,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.post-it').forEach(ticket => {
             const ticketStatus =
                 ticket.classList.contains('aberto') ? 'aberto' :
-                ticket.classList.contains('em-andamento') ? 'em-andamento' :
-                ticket.classList.contains('resolvido') ? 'resolvido' :
-                'fechado';
+                    ticket.classList.contains('em-andamento') ? 'em-andamento' :
+                        ticket.classList.contains('resolvido') ? 'resolvido' :
+                            'fechado';
 
             const ticketDateText = ticket.querySelector('.post-it-date')?.textContent || '';
             const ticketDate = parseDate(ticketDateText);
@@ -132,42 +135,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function resetFilters(e) {
         e.preventDefault();
-        
-        // Limpa os valores dos filtros
+
         if (statusFilter) statusFilter.value = '';
         if (startDate) startDate.value = '';
         if (endDate) endDate.value = '';
-        
-        // Mostra todos os tickets novamente
+
         document.querySelectorAll('.post-it').forEach(ticket => {
             ticket.style.display = 'block';
         });
-        
-        // Fecha o card de filtros (opcional)
+
         if (filterCard) filterCard.style.display = 'none';
         if (filterIcon) {
             filterIcon.classList.remove('bi-chevron-up');
             filterIcon.classList.add('bi-chevron-down');
         }
-        
-        // Limpa qualquer filtro aplicado na URL (se necessário)
+
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.pathname);
         }
     }
-
-    document.addEventListener('click', function (e) {
-        const modal = document.getElementById('ticketModal');
-        if (e.target.closest('.close-modal') || e.target === modal) {
-            fecharModal();
-        }
-    });
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && document.getElementById('ticketModal').style.display === 'flex') {
-            fecharModal();
-        }
-    });
 
     if (filterToggleBtn && filterCard) {
         filterCard.style.display = 'none';
@@ -189,11 +175,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.querySelectorAll('.post-it').forEach(ticket => {
-        const ticketId = ticket.dataset.id;
-        if (ticketId) {
-            ticket.addEventListener('click', () => abrirModalTicket(ticketId));
-        }
-    });
+ // cores 
+ 
+document.querySelectorAll('.post-it').forEach(postIt => {
 
+    const style = getComputedStyle(postIt);
+    const rgb = style.getPropertyValue('--status-rgb').trim();
+    postIt.style.borderTop = `5px solid rgb(${rgb})`;
+    
+    const statusSpan = postIt.querySelector('.post-it-status');
+    if(statusSpan) {
+        statusSpan.className = 'post-it-status';
+        const statusClasses = Array.from(postIt.classList).filter(c => c !== 'post-it');
+        if(statusClasses.length > 0) {
+            statusSpan.classList.add(statusClasses[0]);
+        }
+
+        statusSpan.style.color = `rgb(${rgb})`;
+    }
+});
 });
