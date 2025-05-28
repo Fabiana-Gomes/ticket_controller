@@ -1,27 +1,29 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    //abrir modal
-
-    
-    function abrirModalTicket(ticketId) {
+    // abrir modal
+    function abrirModal(ticketId) {
         const modal = document.getElementById('ticketModal');
         const content = document.getElementById('ticketDetalhes');
-        const postIt = document.querySelector(`.post-it[data-id="${ticketId}"]`);
+        const modalContent = document.querySelector('.modal-content');
 
+        // Remove todas as classes de status anteriores
+        modalContent.className = 'modal-content';
+
+        // Adiciona a classe de status correspondente
+        const postIt = document.querySelector(`.post-it[data-id="${ticketId}"]`);
         if (!postIt) {
             console.error('Ticket não encontrado:', ticketId);
             return;
         }
-        const statusClass = postIt.classList.contains('aberto') ? 'aberto' :
-            postIt.classList.contains('em-andamento') ? 'em-andamento' :
-                postIt.classList.contains('resolvido') ? 'resolvido' : 'fechado';
 
-        const modalContent = modal.querySelector('.modal-content');
-        if (modalContent) {
-            modalContent.className = `modal-content ${statusClass}`;
+        const statusClasses = Array.from(postIt.classList).filter(className => className !== 'post-it');
+        if (statusClasses.length > 0) {
+            modalContent.classList.add(statusClasses[0]);
         }
+
         modal.style.display = 'flex';
         content.innerHTML = '<div class="loading">Carregando...</div>';
+
         fetch(`get_ticket.php?id=${ticketId}`)
             .then(response => {
                 if (!response.ok) throw new Error('Erro na rede');
@@ -35,10 +37,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 content.innerHTML = `<div class="error">Erro ao carregar detalhes do ticket</div>`;
             });
     }
-       document.querySelectorAll('.post-it').forEach(ticket => {
+
+    // associar o clique nos post-its
+    document.querySelectorAll('.post-it').forEach(ticket => {
         const ticketId = ticket.dataset.id;
         if (ticketId) {
-            ticket.addEventListener('click', () => abrirModalTicket(ticketId));
+            ticket.addEventListener('click', () => abrirModal(ticketId));
         }
     });
 
@@ -176,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
  // cores 
- 
+
 document.querySelectorAll('.post-it').forEach(postIt => {
 
     const style = getComputedStyle(postIt);

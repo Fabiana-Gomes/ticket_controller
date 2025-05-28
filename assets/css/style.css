@@ -258,7 +258,7 @@ body {
 }
 
 .no-tickets-card {
-    background: linear-gradient(135deg, #f7fbff 0%, #f8f8f8 100%);
+    background: #ffffff;
     border: 1px solid rgba(4, 20, 140, 0.1);
     border-radius: 0.5rem;
     padding: 2.5rem;
@@ -324,8 +324,8 @@ body {
     border-radius: 0.5rem;
     box-shadow: 0 0rem 1rem rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
-    background-color: #f8f8f8;
-    border-top: 4px solid #a37e3b;
+    background-color: #ffffff;
+    border-top: 4px solid #04148c;
 }
 
 .filter-card .form-label {
@@ -338,7 +338,7 @@ body {
 .filter-card .form-control {
     border-color: #a37e3b;
     font-size: 0.85rem;
-    background-color: #f8f8f8;
+    background-color: #ffffff;
     flex-grow: 1;
     min-width: 0;
 }
@@ -361,7 +361,7 @@ body {
 }
 
 .filter-btn.btn {
-    background-color: #a37e3b;
+    background-color: #04148c;
     color: white;
     border: none;
     transition: background-color 0.3s ease;

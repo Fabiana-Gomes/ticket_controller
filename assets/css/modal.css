@@ -140,7 +140,7 @@
 
 .ticket-protocolo {
     font-weight: 600;
-    color: #000000;
+    color: #04148c;
     font-size: 1.5rem;
     margin: 0 0 5px 0;
 }
@@ -150,15 +150,6 @@
     color: #444;
     font-size: 1.2rem;
     margin: 0;
-}
-
-.ticket-status {
-    font-size: 0.8rem;
-    padding: 5px 12px;
-    border-radius: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .ticket-status.instalacao,
@@ -181,6 +172,7 @@
 .ticket-status.sugestao {
     background-color: rgba(163, 126, 59, 0.1);
     color: #a37e3b;
+    border-radius: 10%;
 }
 
 .ticket-status.cancelado,
@@ -240,7 +232,7 @@
 
 .section-title {
     font-size: 1.5rem;
-    color: #000000;
+    color: #04148c;
     font-weight: 600;
     margin-top: 7%;
 }
