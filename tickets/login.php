@@ -6,15 +6,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST['username'] ?? '';
     $pass = $_POST['password'] ?? '';
 
-    $stmt = $pdo->prepare("SELECT id, senha FROM clientes WHERE login = :login LIMIT 1");
+    $stmt = $pdo->prepare("SELECT id, senha, ativo FROM clientes WHERE login = :login LIMIT 1");
     $stmt->execute([':login' => $user]);
     $cliente = $stmt->fetch();
 
-    if ($cliente && $pass === $cliente['senha']) {
-        $_SESSION['authenticated'] = true;
-        $_SESSION['cliente_id'] = $cliente['id'];
-        header('Location: index.php');
-        exit;
+    if ($cliente) {
+        if ($cliente['ativo'] == 0) {
+            $error = 'Acesso negado. Sua escola está inativa ou cancelada.';
+        } elseif ($pass === $cliente['senha']) {
+            $_SESSION['authenticated'] = true;
+            $_SESSION['cliente_id'] = $cliente['id'];
+            header('Location: index.php');
+            exit;
+        } else {
+            $error = 'Usuário ou senha inválidos.';
+        }
     } else {
         $error = 'Usuário ou senha inválidos.';
     }

@@ -6,7 +6,8 @@ require_once '../includes/TicketService.php';
 header('Content-Type: text/html; charset=utf-8');
 
 try {
-    if (!isset($_SESSION['cliente_id'])) {
+
+    if (empty($_SESSION['cliente_id'])) {
         throw new Exception('Acesso não autorizado');
     }
 
@@ -18,17 +19,19 @@ try {
         throw new Exception('ID do ticket inválido');
     }
 
-    $clienteId = $_SESSION['cliente_id'];
+    $clienteId = (int) $_SESSION['cliente_id'];
     $ticketService = new TicketService($pdo);
     $ticketData = $ticketService->getTicketDetails($ticketId, $clienteId);
 
     if (!$ticketData) {
-        throw new Exception('Ticket não encontrado ou você não tem permissão para visualizá-lo');
+        throw new Exception('Ticket não encontrado ou você não tem permissão para visualizá-lo.');
     }
 
     echo $ticketService->renderTicket($ticketData);
 } catch (Exception $e) {
     http_response_code(400);
+
     echo '<div class="error">' . htmlspecialchars($e->getMessage()) . '</div>';
+
     error_log('Erro em get_ticket.php: ' . $e->getMessage());
 }

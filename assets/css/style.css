@@ -18,6 +18,9 @@ body {
     margin: 2rem auto;
     box-shadow: 0 2px 8px rgba(4, 20, 140, 0.08);
     max-width: 1200px;
+    border-left: 5px solid #04148c;
+    align-items: center;
+
 }
 
 .title-container:hover {
@@ -30,14 +33,14 @@ body {
     color: #04148c;
     margin: 0;
     position: relative;
-    font-weight: 700;
-    font-size: 2rem;
+    font-weight: 600;
+    font-size: 2.5rem;
     letter-spacing: -0.5px;
     padding-bottom: 8px;
 }
 
 .title-icon {
-    font-size: 1.75rem;
+    font-size: 3rem;
     color: #a37e3b;
     vertical-align: middle;
     margin-right: 0.75rem;
@@ -49,17 +52,7 @@ body {
     position: relative;
 }
 
-.title-underline {
-    position: absolute;
-    bottom: 0;
-    left: 51%;
-    transform: translateX(-50%);
-    width: 9rem;
-    height: 0.25rem;
-    background: linear-gradient(90deg, #04148c, #a37e3b);
-    border-radius: 0.2rem;
-    transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-}
+
 
 .title-container:hover .title-underline {
     width: 12rem;
@@ -158,15 +151,6 @@ body {
     --status-ecommerce: #800080;
 }
 
-.post-it-status {
-   font-size: 0.75rem;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
 .post-it[class*="post-it-"] .post-it-status {
     color: rgb(var(--status-rgb));
 }
@@ -227,13 +211,14 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     display: inline-block;
-    background-color: rgba(var(--status-rgb), 0.1); 
-    border: 1px solid rgba(var(--status-rgb), 0.3); 
+    background-color: rgba(var(--status-rgb), 0.1);
+    border: 1px solid rgba(var(--status-rgb), 0.3);
 }
 
 .post-it[class*="post-it-"] .post-it-status {
     color: rgb(var(--status-rgb));
 }
+
 .post-it-more {
     color: rgba(0, 0, 0, 0.2);
     transition: all 0.2s ease;
@@ -304,6 +289,9 @@ body {
     display: inline-flex;
     align-items: center;
     transition: all 0.3s ease;
+    border-left: 4px solid #04148c;
+
+
 }
 
 .filter-toggle-btn:hover {
@@ -311,6 +299,7 @@ body {
     box-shadow: 0 8px 20px rgba(8, 21, 124, 0.10);
     color: #04148c;
     background-color: #ffffff;
+     border-left: 4px solid #04148c;
 }
 
 .filter-card {
@@ -325,18 +314,19 @@ body {
     box-shadow: 0 0rem 1rem rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
     background-color: #ffffff;
-    border-top: 4px solid #04148c;
+    border-left: 4px solid #04148c;
+
 }
 
 .filter-card .form-label {
     color: #04148c;
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .filter-card .form-select,
 .filter-card .form-control {
-    border-color: #a37e3b;
+    border: 1px solid #a37e3b;
     font-size: 0.85rem;
     background-color: #ffffff;
     flex-grow: 1;
@@ -349,9 +339,9 @@ body {
 }
 
 .reset-btn.btn {
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     color: #04148c;
-    border: 1px solid #a37e3b;
+    border: 2px solid #a37e3b;
     height: 38px;
     padding: 6px 16px;
     font-size: 14px;
@@ -361,7 +351,7 @@ body {
 }
 
 .filter-btn.btn {
-    background-color: #04148c;
+    background-color: #192792;
     color: white;
     border: none;
     transition: background-color 0.3s ease;
@@ -421,12 +411,13 @@ body {
         position: relative;
         left: 0;
         transform: none;
+        flex-direction: column;
     }
 
     .filter-card .form-label,
     .filter-card .form-select,
     .filter-card .form-control {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
 
     .no-tickets-card {

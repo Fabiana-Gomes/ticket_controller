@@ -36,6 +36,7 @@ $tickets = $stmt->fetchAll();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close" />
     <link rel="stylesheet" href="../assets/css/style.css">
@@ -46,11 +47,11 @@ $tickets = $stmt->fetchAll();
     <div class="title-container">
         <h1>
             <i class="bi bi-card-checklist title-icon"></i>
-            <span class="title-text">Solicitações da unidade</span>
+            <span class="title-text">Tickets solicitados</span>
             <div class="title-underline"></div>
         </h1>
     </div>
-      <div class="filter-wrapper">
+    <div class="filter-wrapper">
         <div class="filter-container">
             <button class="btn filter-toggle-btn" id="filterToggleBtn">
                 <i class="bi bi-funnel me-2"></i>
@@ -66,11 +67,16 @@ $tickets = $stmt->fetchAll();
                     <label for="statusFilter" class="form-label">Status</label>
                     <select class="form-select" id="statusFilter">
                         <option selected value="">Todos</option>
-                        <option value="resolvido">Resolvido/Respondido/Corrigido</option>
-                        <option value="instalacao">Instalação/Livros/Instrutor</option>
-                        <option value="treinamento">Treinamento/Acompanhamento</option>
-                        <option value="cancelado">Cancelado/Desinstalação</option>
-                        <option value="loja-virtual">Loja Virtual/E-commerce</option>
+                        <option value="concluido">Concluídos</option>
+                        <option value="pedagogico">Pedagógico</option>
+                        <option value="ead">EAD</option>
+                        <option value="gestor">Gestor</option>
+                        <option value="financeiro">Financeiro</option>
+                        <option value="presencial">Presencial</option>
+                        <option value="comercial">Comercial</option>
+                        <option value="treinamentos">Treinamentos</option>
+                        <option value="cancelado">Cancelados</option>
+                        <option value="outros">Outros</option>
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -92,7 +98,7 @@ $tickets = $stmt->fetchAll();
             </form>
         </div>
     </div>
-    
+
     <?php if (empty($tickets)): ?>
         <div class="no-tickets-container">
             <div class="no-tickets-card">
@@ -138,7 +144,7 @@ $tickets = $stmt->fetchAll();
                     'Liberação de Migração' => 'migracao',
                     'EAD' => 'ead'
                 ];
-                
+
                 $statusClass = $statusMapping[$ticket['situacao']] ?? 'aberto';
             ?>
                 <div class="post-it <?= $statusClass ?>" data-id="<?= $ticket['id'] ?>">

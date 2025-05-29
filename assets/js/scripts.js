@@ -1,22 +1,23 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('ticketModal');
+    const content = document.getElementById('ticketDetalhes');
+    const modalContent = modal?.querySelector('.modal-content');
+    const filterToggleBtn = document.getElementById('filterToggleBtn');
+    const filterCard = document.getElementById('filterCard');
+    const filterIcon = document.getElementById('filterIcon');
+    const filterForm = document.getElementById('filterForm');
+    const resetFiltersBtn = document.getElementById('resetFilters');
+    const statusFilter = document.getElementById('statusFilter');
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
 
     // abrir modal
     function abrirModal(ticketId) {
-        const modal = document.getElementById('ticketModal');
-        const content = document.getElementById('ticketDetalhes');
-        const modalContent = document.querySelector('.modal-content');
-
-        // Remove todas as classes de status anteriores
-        modalContent.className = 'modal-content';
-
-        // Adiciona a classe de status correspondente
         const postIt = document.querySelector(`.post-it[data-id="${ticketId}"]`);
-        if (!postIt) {
-            console.error('Ticket não encontrado:', ticketId);
-            return;
-        }
+        if (!postIt || !modalContent) return;
 
-        const statusClasses = Array.from(postIt.classList).filter(className => className !== 'post-it');
+        modalContent.className = 'modal-content';
+        const statusClasses = Array.from(postIt.classList).filter(c => c !== 'post-it');
         if (statusClasses.length > 0) {
             modalContent.classList.add(statusClasses[0]);
         }
@@ -38,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // associar o clique nos post-its
     document.querySelectorAll('.post-it').forEach(ticket => {
         const ticketId = ticket.dataset.id;
         if (ticketId) {
@@ -47,39 +47,27 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     //fechar modal
-
     function fecharModal() {
-        const modal = document.getElementById('ticketModal');
         if (modal) {
             modal.style.display = 'none';
         }
     }
-    document.addEventListener('click', function (e) {
-        const modal = document.getElementById('ticketModal');
+
+    document.addEventListener('click', e => {
         if (modal && modal.style.display === 'flex') {
             if (e.target.closest('.close-modal') || e.target === modal) {
                 fecharModal();
             }
         }
     });
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            const modal = document.getElementById('ticketModal');
-            if (modal && modal.style.display === 'flex') {
-                fecharModal();
-            }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
+            fecharModal();
         }
     });
 
-
-    // filtro
-
-    const filterToggleBtn = document.getElementById('filterToggleBtn');
-    const filterCard = document.getElementById('filterCard');
-    const filterIcon = document.getElementById('filterIcon');
-    const filterForm = document.getElementById('filterForm');
-    const resetFiltersBtn = document.getElementById('resetFilters');
-
+    // Filtros
     function toggleFilter(e) {
         e.stopPropagation();
         const isVisible = filterCard.style.display === 'block';
@@ -96,35 +84,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function applyFilters(e) {
         e.preventDefault();
-        const status = document.getElementById('statusFilter').value;
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
+        const status = statusFilter.value;
+        const start = startDate.value;
+        const end = endDate.value;
 
         document.querySelectorAll('.post-it').forEach(ticket => {
-            const ticketStatus =
-                ticket.classList.contains('aberto') ? 'aberto' :
-                    ticket.classList.contains('em-andamento') ? 'em-andamento' :
-                        ticket.classList.contains('resolvido') ? 'resolvido' :
-                            'fechado';
-
+            const ticketStatus = Array.from(ticket.classList).find(c => c !== 'post-it') || 'aberto';
             const ticketDateText = ticket.querySelector('.post-it-date')?.textContent || '';
             const ticketDate = parseDate(ticketDateText);
 
             let shouldShow = true;
 
-            if (status && ticketStatus !== status) {
-                shouldShow = false;
+            const statusGroups = {
+                'concluido': ['resolvido', 'respondido', 'corrigido'],
+                'pedagogico': ['livros-lucrativos', 'instrutor-comunicativo', 'classstudio', 'carteira-estudante'],
+                'ead': ['om-digital', 'correcao-cursos', 'loja-virtual', 'ajustes-loja', 'instalacao-ead', 'site', 'ajustes-site', 'migracao', 'ead', 'app-cursos'],
+                'gestor': ['om-digital', 'gestor-melhorias', 'gestor'],
+                'financeiro': ['pagarme', 'edpay', 'sender'],
+                'presencial': ['instalacao', 'correcao-cursos', 'melhoria-metodo', 'desinstalacao'],
+                'comercial': ['crm', 'lp', 'bel'],
+                'treinamentos': ['treinamento', 'treinamento-ferramentas'],
+                'cancelado': ['cancelado'],
+                'outros': ['sugestao', 'acompanhamento']
+            };
+
+            if (status) {
+                shouldShow = statusGroups[status]?.includes(ticketStatus) || false;
             }
 
-            if (startDate) {
-                const filterStartDate = new Date(startDate);
+            if (start) {
+                const filterStartDate = new Date(start);
                 if (ticketDate instanceof Date && !isNaN(ticketDate) && ticketDate < filterStartDate) {
                     shouldShow = false;
                 }
             }
 
-            if (endDate) {
-                const filterEndDate = new Date(endDate);
+            if (end) {
+                const filterEndDate = new Date(end);
                 if (ticketDate instanceof Date && !isNaN(ticketDate) && ticketDate > filterEndDate) {
                     shouldShow = false;
                 }
@@ -172,30 +168,28 @@ document.addEventListener('DOMContentLoaded', function () {
         resetFiltersBtn.addEventListener('click', resetFilters);
     }
 
-    document.addEventListener('click', function (e) {
+    document.addEventListener('click', e => {
         if (!filterCard.contains(e.target) && e.target !== filterToggleBtn) {
             filterCard.style.display = 'none';
             filterIcon.classList.replace('bi-chevron-up', 'bi-chevron-down');
         }
     });
 
- // cores 
+    // cores 
+    document.querySelectorAll('.post-it').forEach(postIt => {
+        const style = getComputedStyle(postIt);
+        const rgb = style.getPropertyValue('--status-rgb').trim();
+        postIt.style.borderTop = `5px solid rgb(${rgb})`;
 
-document.querySelectorAll('.post-it').forEach(postIt => {
+        const statusSpan = postIt.querySelector('.post-it-status');
+        if (statusSpan) {
+            statusSpan.className = 'post-it-status';
+            const statusClasses = Array.from(postIt.classList).filter(c => c !== 'post-it');
+            if (statusClasses.length > 0) {
+                statusSpan.classList.add(statusClasses[0]);
+            }
 
-    const style = getComputedStyle(postIt);
-    const rgb = style.getPropertyValue('--status-rgb').trim();
-    postIt.style.borderTop = `5px solid rgb(${rgb})`;
-    
-    const statusSpan = postIt.querySelector('.post-it-status');
-    if(statusSpan) {
-        statusSpan.className = 'post-it-status';
-        const statusClasses = Array.from(postIt.classList).filter(c => c !== 'post-it');
-        if(statusClasses.length > 0) {
-            statusSpan.classList.add(statusClasses[0]);
+            statusSpan.style.color = `rgb(${rgb})`;
         }
-
-        statusSpan.style.color = `rgb(${rgb})`;
-    }
-});
+    });
 });
