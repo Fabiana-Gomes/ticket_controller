@@ -168,13 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resetFiltersBtn.addEventListener('click', resetFilters);
     }
 
-    document.addEventListener('click', e => {
-        if (!filterCard.contains(e.target) && e.target !== filterToggleBtn) {
-            filterCard.style.display = 'none';
-            filterIcon.classList.replace('bi-chevron-up', 'bi-chevron-down');
-        }
-    });
-
     // cores 
     document.querySelectorAll('.post-it').forEach(postIt => {
         const style = getComputedStyle(postIt);
@@ -191,5 +184,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             statusSpan.style.color = `rgb(${rgb})`;
         }
+    });
+        // exibir em listagem
+        const toggleViewBtn = document.getElementById('toggleViewBtn');
+        const toggleViewIcon = document.getElementById('toggleViewIcon');
+        const container = document.querySelector('.post-it-container');
+
+        let isListView = false;
+
+        toggleViewBtn?.addEventListener('click', () => {
+            isListView = !isListView;
+            container.classList.toggle('list-view', isListView);
+            toggleViewIcon.classList.toggle('bi-grid', !isListView);
+            toggleViewIcon.classList.toggle('bi-list', isListView);
     });
 });

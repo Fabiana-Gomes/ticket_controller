@@ -51,15 +51,21 @@ $tickets = $stmt->fetchAll();
             <div class="title-underline"></div>
         </h1>
     </div>
-    <div class="filter-wrapper">
-        <div class="filter-container">
-            <button class="btn filter-toggle-btn" id="filterToggleBtn">
-                <i class="bi bi-funnel me-2"></i>
-                <span class="filter-text">Filtrar Tickets</span>
-                <i class="bi bi-chevron-down ms-2" id="filterIcon"></i>
+
+  <div class="filter-wrapper">
+    <div class="filter-container d-flex align-items-center">
+        <div class="view-toggle-container me-2">
+            <button class="btn custom-icon-color" id="toggleViewBtn" title="Alternar visualização">
+                <i id="toggleViewIcon" class="bi bi-grid"></i>
             </button>
         </div>
+        <button class="btn filter-toggle-btn" id="filterToggleBtn">
+            <i class="bi bi-funnel me-2"></i>
+            <span class="filter-text">Filtrar Tickets</span>
+            <i class="bi bi-chevron-down ms-2" id="filterIcon"></i>
+        </button>
     </div>
+</div>
     <div class="card filter-card" id="filterCard">
         <div class="card-body">
             <form class="row g-2 align-items-end" id="filterForm">
@@ -166,7 +172,7 @@ $tickets = $stmt->fetchAll();
 
     <div id="ticketModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="fecharModal()">
+            <span class="close-modal">
                 <span class="material-symbols-outlined">close</span>
             </span>
             <div id="ticketDetalhes">

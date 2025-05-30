@@ -276,7 +276,7 @@ body {
 .filter-container {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .filter-toggle-btn {
@@ -299,7 +299,7 @@ body {
     box-shadow: 0 8px 20px rgba(8, 21, 124, 0.10);
     color: #04148c;
     background-color: #ffffff;
-     border-left: 4px solid #04148c;
+    border-left: 4px solid #04148c;
 }
 
 .filter-card {
@@ -311,7 +311,7 @@ body {
     min-width: 1150px;
     margin: 0.5rem auto;
     border-radius: 0.5rem;
-    box-shadow: 0 0rem 1rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0rem 0.5rem rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
     background-color: #ffffff;
     border-left: 4px solid #04148c;
@@ -364,6 +364,35 @@ body {
     font-weight: 600;
 }
 
+.post-it-container.list-view {
+    grid-template-columns: none;/
+}
+
+.custom-icon-color {
+    color: #04148c;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 6px;
+    transition: background-color 0.3s ease;
+    background-color: white;
+}
+
+.custom-icon-color:hover {
+    color: #04148c;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(8, 21, 124, 0.10);
+    background-color: white;
+}
+
+.custom-icon-color i {
+    font-size: 1.3rem; 
+    line-height: 1;    
+}
+
+.custom-icon-color i {
+    font-size: 1.3rem; 
+    line-height: 1;    
+}
 
 @media (max-width: 767px) {
     .title-container {
